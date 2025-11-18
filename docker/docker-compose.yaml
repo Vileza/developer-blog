@@ -1,0 +1,56 @@
+services:
+
+  apache-proxy:
+    build:
+      context: .
+      dockerfile: ./containers/apache/Dockerfile
+    container_name: apache-proxy
+    ports:
+      - "80:80"
+    volumes:
+      - ./containers/apache/conf/000-default.conf:/etc/apache2/sites-available/000-default.conf
+    networks: 
+      - blog-microservices-network
+
+  api-auth-service:
+    build:
+      context: ./containers/api-services
+      dockerfile: Dockerfile
+    container_name: api-auth-service
+    expose:
+      - "80"
+    volumes:
+      - ./../public_html/services/api-auth:/var/www/html
+      - ./utils/php/php.ini:/etc/php/8.3/apache2/php.ini
+    networks:
+      - blog-microservices-network
+
+  api-user-service:
+    build:
+      context: ./containers/api-services
+      dockerfile: Dockerfile
+    container_name: api-user-service
+    expose:
+      - "80"
+    volumes:
+      - ./../public_html/services/api-user:/var/www/html
+      - ./utils/php/php.ini:/etc/php/8.3/apache2/php.ini
+    networks:
+      - blog-microservices-network
+
+  api-post-service:
+    build:
+      context: ./containers/api-services
+      dockerfile: Dockerfile
+    container_name: api-post-service
+    expose:
+      - "80"
+    volumes:
+      - ./../public_html/services/api-post:/var/www/html
+      - ./utils/php/php.ini:/etc/php/8.3/apache2/php.ini
+    networks:
+      - blog-microservices-network
+
+networks:
+  blog-microservices-network:
+    driver: bridge
