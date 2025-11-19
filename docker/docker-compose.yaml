@@ -51,6 +51,20 @@ services:
     networks:
       - blog-microservices-network
 
+  database:
+    image: mariadb:10.3
+    container_name: database
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=developer_blog
+    volumes:
+      - ./data/database:/var/lib/mysql
+    restart: always
+    networks:
+      - blog-microservices-network
+
 networks:
   blog-microservices-network:
     driver: bridge
