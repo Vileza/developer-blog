@@ -27,9 +27,10 @@ RUN apt-get install -y \
 	php8.3-soap \
 	libapache2-mod-php8.3
 
-RUN a2enmod php8.3
+RUN a2enmod php8.3 && \
+	  a2enmod rewrite
 
-WORKDIR /var/www/html
+WORKDIR /var/www/html/public
 
 EXPOSE 80
 
