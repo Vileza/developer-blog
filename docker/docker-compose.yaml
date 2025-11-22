@@ -38,15 +38,15 @@ services:
     networks:
       - blog-microservices-network
 
-  api-post-service:
+  api-blog-service:
     build:
       context: ./containers/api-services
       dockerfile: Dockerfile
-    container_name: api-post-service
+    container_name: api-blog-service
     expose:
       - "80"
     volumes:
-      - ./../public_html/services/api-post:/var/www/html
+      - ./../public_html/services/api-blog:/var/www/html
       - ./utils/php/php.ini:/etc/php/8.3/apache2/php.ini
       - ./containers/api-services/000-default.conf:/etc/apache2/sites-available/000-default.conf
     networks:

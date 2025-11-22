@@ -3,6 +3,6 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
+Route::get('/posts', function (Request $request) {
     return ['message' => 'Hello World'];
-})->middleware('auth:sanctum');
+});
