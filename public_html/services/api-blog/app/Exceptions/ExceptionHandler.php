@@ -44,7 +44,7 @@ class ExceptionHandler {
 			case NotFoundHttpException::class:
 				return $this->generateModelNotFoundException();
 			default:
-				if($this->verifyCustonException()) return $this->generateCustonException();
+				if($this->verifyCustomException()) return $this->generateCustomException();
 
 				return $this->generateGenericException();
 		}
@@ -54,7 +54,7 @@ class ExceptionHandler {
 	 * Método responsável por verificar se a exceção é uma exceção customizada
 	 * @return bool
 	 */
-	private function verifyCustonException() {
+	private function verifyCustomException() {
 		$namespaceException = get_class($this->exception);
 
 		if($namespaceException === self::class) return false;
@@ -86,7 +86,7 @@ class ExceptionHandler {
 	 * Método responsável por gerar uma exceção customizada
 	 * @return JsonResponse
 	 */
-	private function generateCustonException() {
+	private function generateCustomException() {
 		return response()->json([
 			'message' => $this->exception->getMessage()
 		], 404);
