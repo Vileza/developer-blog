@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use App\Exceptions\Api\ApiException;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
@@ -87,8 +88,10 @@ class ExceptionHandler {
 	 * @return JsonResponse
 	 */
 	private function generateCustomException() {
+		$httpCode = ($this->exception instanceof ApiException) ? $this->exception->getStatusCode() : 400;
+
 		return response()->json([
 			'message' => $this->exception->getMessage()
-		], 404);
+		], $httpCode);
 	}
 }
