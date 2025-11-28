@@ -68,9 +68,11 @@ class ExceptionHandler {
 	 * @return JsonResponse
 	 */
 	private function generateGenericException() {
+		$message = env('APP_DEBUG', false) ? $this->exception->getMessage() : 'Requisição inválida';
+
 		return response()->json([
-			'message' => 'Requisição inválida'
-		], 404);
+			'message' => $message
+		], 400);
 	}
 
 	/**
@@ -78,8 +80,10 @@ class ExceptionHandler {
 	 * @return JsonResponse
 	 */
 	private function generateModelNotFoundException() {
+		$message = env('APP_DEBUG', false) ? $this->exception->getMessage() : 'Registro não encontrado';
+
 		return response()->json([
-			'message' => 'Registro não encontrado'
+			'message' => $message
 		], 404);
 	}
 
