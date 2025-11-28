@@ -1,8 +1,7 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Content\PostController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/posts', function (Request $request) {
-    return ['message' => 'Hello World'];
-});
+Route::get('/posts', [PostController::class, 'searchList']);
+Route::get('/posts/{post}', [PostController::class, 'searchModel']);
