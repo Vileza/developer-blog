@@ -17,7 +17,7 @@ on:
 jobs:
   #NOME DA TAREFA A SER EXECUTADA PARA TESTES AUTOMATIZADOS
   teste-automatizado:
-    runs-on: ubuntu:22.04
+    runs-on: ubuntu-22.04
 
     #PASSOS A SEREM EXECUTADOS PARA ESTA TAREFA
     steps:
@@ -53,7 +53,7 @@ jobs:
         #CAMINHO PARA O DIRETÓRIO DE TRABALHO
         working-directory: public_html/services/api-blog
         #EXECUTA O COMANDO PARA INSTALAR AS DEPENDÊNCIAS DO COMPOSER
-        run: composer install --no-dev --prefer-dist --optimize-autoloader --no-progress --no-interaction
+        run: composer install --prefer-dist --optimize-autoloader --no-progress --no-interaction
 
       #PASSO 5: CONFIGURAÇÃO DO AMBIENTE DE TESTE
       - name: Configuração do ambiente de teste
