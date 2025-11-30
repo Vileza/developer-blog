@@ -29,7 +29,7 @@ jobs:
       
       #PASSO 2: REALIZAR AS CONFIGURAÇÕES NECESSÁRIAS PARA O PHP
       - name: Configuração do PHP
-        uses: shivammathur/setup-php@v4
+        uses: shivammathur/setup-php@v2
         #PARÂMETROS DE CONFIGURAÇÃO DESSA ACTION
         with:
           php-version: 8.3
