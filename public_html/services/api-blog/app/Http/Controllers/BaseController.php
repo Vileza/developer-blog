@@ -16,10 +16,10 @@ abstract class BaseController extends Controller {
 
   /**
    * Método responsável por buscar um registro pelo ID
-   * @param  Model $obModel Modelo
+   * @param  int $identificador Identificador do registro
    * @return BaseResource
    */
-  public function searchModel(Model $obModel): BaseResource {
+  public function searchModel($identificador): BaseResource {
     throw new ApiException(406, 'Registro não encontrado');
   }
 
