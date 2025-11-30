@@ -19,6 +19,15 @@ jobs:
   teste-automatizado:
     runs-on: ubuntu-22.04
 
+    services:
+      database:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: developer_blog
+        ports:
+          - 3306:3306
+          
     #PASSOS A SEREM EXECUTADOS PARA ESTA TAREFA
     steps:
 
