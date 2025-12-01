@@ -37,7 +37,7 @@ class PostController extends BaseController {
    */
   public function searchList(): ResourceCollection {
     $listPosts = Post::paginate();
-    if($listPosts->isEmpty()) throw new ApiException(404, 'Nenhum post encontrado');
+    if(!$listPosts->isEmpty()) throw new ApiException(404, 'Nenhum post encontrado');
 
     return PostResource::collection($listPosts);
   }
