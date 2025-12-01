@@ -46,15 +46,17 @@ jobs:
           php-version: 8.3
           extensions: mbstring, curl, fileinfo, intl, mysql, bcmath, zip, xml
 
-      #PASSO 3: CACHE DE DEPENDÊNCIAS DO COMPOSER
+      #PASSO 3.0: CRIAÇÃO DO DIRETÓRIO DE CACHE DO COMPOSER
+      - name: Criação do diretório de cache do composer
+        run: mkdir -p ~/.composer/cache
+
+      #PASSO 3.1: CACHE DE DEPENDÊNCIAS DO COMPOSER
       - name: Dependências do composer em cache
         uses: actions/cache@v4
         #PARÂMETROS DE CONFIGURAÇÃO DESSA ACTION
         with:
           #CAMINHO PARA O CACHE
-          path: |
-            ~/.composer/cache/files
-            ~/.composer/cache/repo
+          path: ~/.composer/cache
           #CHAVE PARA O CACHE
           key: ${{runner.os}}-composer-api-blog-${{hashFiles('public_html/services/api-blog/composer.lock')}}
           #CHAVES PARA RESTAURAR O CACHE
