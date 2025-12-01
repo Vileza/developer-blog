@@ -46,25 +46,27 @@ jobs:
           php-version: 8.3
           extensions: mbstring, curl, fileinfo, intl, mysql, bcmath, zip, xml
 
-      #PASSO 3: INSTALAÇÃO DAS DEPENDÊNCIAS DO COMPOSER
-      - name: Instalação das dependências do composer
-        #CAMINHO PARA O DIRETÓRIO DE TRABALHO
-        working-directory: public_html/services/api-blog
-        #EXECUTA O COMANDO PARA INSTALAR AS DEPENDÊNCIAS DO COMPOSER
-        run: composer install --prefer-dist --optimize-autoloader --no-progress --no-interaction
-
-      #PASSO 4: CACHE DE DEPENDÊNCIAS DO COMPOSER
+      #PASSO 3: CACHE DE DEPENDÊNCIAS DO COMPOSER
       - name: Dependências do composer em cache
         uses: actions/cache@v4
         #PARÂMETROS DE CONFIGURAÇÃO DESSA ACTION
         with:
           #CAMINHO PARA O CACHE
-          path: ~/.composer/cache
+          path: |
+            ~/.composer/cache/files
+            ~/.composer/cache/repo
           #CHAVE PARA O CACHE
           key: ${{runner.os}}-composer-api-blog-${{hashFiles('public_html/services/api-blog/composer.lock')}}
           #CHAVES PARA RESTAURAR O CACHE
           restore-keys: |
             ${{runner.os}}-composer-api-blog-
+
+      #PASSO 4: INSTALAÇÃO DAS DEPENDÊNCIAS DO COMPOSER
+      - name: Instalação das dependências do composer
+        #CAMINHO PARA O DIRETÓRIO DE TRABALHO
+        working-directory: public_html/services/api-blog
+        #EXECUTA O COMANDO PARA INSTALAR AS DEPENDÊNCIAS DO COMPOSER
+        run: composer install --prefer-dist --optimize-autoloader --no-progress --no-interaction
 
       #PASSO 5: CONFIGURAÇÃO DO AMBIENTE DE TESTE
       - name: Configuração do ambiente de teste
