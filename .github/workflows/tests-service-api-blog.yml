@@ -1,5 +1,6 @@
 name: Testes automatizados do serviço Api do Blog
 
+#GATILHOS PARA EXECUTAR A TAREFA DE TESTES AUTOMATIZADOS
 on:
   push:
     branches: [master]
@@ -19,9 +20,10 @@ jobs:
   teste-automatizado:
     runs-on: ubuntu-22.04
 
+    #SERVIÇO DE BANCO DE DADOS MARIADB
     services:
       database:
-        image: mysql:8.0
+        image: mariadb:10.3
         env:
           MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: developer_blog
