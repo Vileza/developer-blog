@@ -22,6 +22,7 @@ services:
     volumes:
       - ./../public_html/services/api-auth:/var/www/html
       - ./utils/php/php.ini:/etc/php/8.3/apache2/php.ini
+      - ./containers/api-services/000-default.conf:/etc/apache2/sites-available/000-default.conf
     networks:
       - blog-microservices-network
 
