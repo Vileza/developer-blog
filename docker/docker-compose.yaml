@@ -12,6 +12,34 @@ services:
     networks: 
       - blog-microservices-network
 
+  database-auth:
+    image: mariadb:10.3
+    container_name: database-auth
+    ports:
+      - "3307:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=database_auth
+    volumes:
+      - ./data/database-auth:/var/lib/mysql
+    restart: always
+    networks:
+      - blog-microservices-network
+      
+  database:
+    image: mariadb:10.3
+    container_name: database
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=developer_blog
+    volumes:
+      - ./data/database:/var/lib/mysql
+    restart: always
+    networks:
+      - blog-microservices-network
+
   api-auth-service:
     build:
       context: ./containers/api-services
@@ -23,6 +51,9 @@ services:
       - ./../public_html/services/api-auth:/var/www/html
       - ./utils/php/php.ini:/etc/php/8.3/apache2/php.ini
       - ./containers/api-services/000-default.conf:/etc/apache2/sites-available/000-default.conf
+    depends_on:
+      - database-auth
+    restart: always
     networks:
       - blog-microservices-network
 
@@ -50,20 +81,8 @@ services:
       - ./../public_html/services/api-blog:/var/www/html
       - ./utils/php/php.ini:/etc/php/8.3/apache2/php.ini
       - ./containers/api-services/000-default.conf:/etc/apache2/sites-available/000-default.conf
-    networks:
-      - blog-microservices-network
-
-  database:
-    image: mariadb:10.3
-    container_name: database
-    ports:
-      - "3306:3306"
-    environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=developer_blog
-    volumes:
-      - ./data/database:/var/lib/mysql
-    restart: always
+    depends_on:
+      - database
     networks:
       - blog-microservices-network
 
