@@ -30,8 +30,16 @@ RUN apt-get install -y \
 RUN a2enmod php8.3 && \
 	  a2enmod rewrite
 
+RUN mkdir -p /usr/local/bin/entrypoint
+
+COPY entrypoint /usr/local/bin/entrypoint/
+
+RUN chmod -R +x /usr/local/bin/entrypoint/
+
 WORKDIR /var/www/html/public
 
 EXPOSE 80
+
+ENTRYPOINT ["/usr/local/bin/entrypoint/execute.sh"]
 
 CMD ["apachectl", "-D", "FOREGROUND"]
