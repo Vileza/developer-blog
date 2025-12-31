@@ -4,7 +4,7 @@
 
 Este projeto foi criado com o objetivo de **aprendizado em engenharia de software e arquitetura de software**. As técnicas aplicadas são intencionalmente over-engineered, servindo exclusivamente para fins de estudo e experimentação.
 
-> ⚠️ **Aviso**: Este projeto não reflete uma arquitetura recomendada para produção. O foco é explorar e aprender conceitos avançados de desenvolvimento de software.
+> ⚠️ **Aviso**: Este projeto não reflete uma arquitetura recomendada para produção levando em consideração que é um projeto pequeno. O foco é explorar e aprender conceitos avançados de desenvolvimento de software.
 
 ---
 
