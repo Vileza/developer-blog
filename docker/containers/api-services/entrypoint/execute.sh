@@ -11,6 +11,6 @@ until php artisan db:show &>/dev/null; do
 done
 
 # EXECUTA AS MIGRAÇÕES
-php artisan migrate
+php artisan migrate --force
 
 exec apachectl -D FOREGROUND
