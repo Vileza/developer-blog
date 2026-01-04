@@ -4,6 +4,7 @@ namespace App\Http\Requests\Auth;
 
 use App\Enums\Auth\AuthenticationType;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class PayloadFormRequest extends FormRequest {
 
@@ -22,7 +23,7 @@ class PayloadFormRequest extends FormRequest {
   public function rules(): array {
     return [
       'identifier' => 'required|string|max:100',
-      'type'       => 'required|string|enum:' . AuthenticationType::getEnums(),
+      'type'       => ['required','string',Rule::enum(AuthenticationType::class)]
     ];
   }
 }
