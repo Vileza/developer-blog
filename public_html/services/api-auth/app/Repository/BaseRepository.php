@@ -34,4 +34,13 @@ abstract class BaseRepository {
   protected function hasById(int $id): bool {
     return $this->generateQuery()->where('id', '=', $id)->exists();
   }
+
+  /**
+   * Método responsável por criar um registro
+   * @param  array $data
+   * @return 
+   */
+  public function create(array $data) {
+    return $this->model::create($data);
+  }
 }
