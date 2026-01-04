@@ -23,12 +23,12 @@ enum AuthenticationType: string {
 
   /**
    * Método responsável por retornar os tipos de autenticação
-   * @return array
+   * @return string
    */
-  public static function getEnums(): array {
-    return [
-      self::USER,
-      self::READER,
-    ];
+  public static function getEnums(): string {
+    $labelEnums = [];
+    foreach (self::cases() as $obEnum) $labelEnums[] = $obEnum->value;
+
+    return implode('|', $labelEnums);
   }
 }
