@@ -12,7 +12,7 @@ class AuthenticateController extends Controller {
   public function generateToken(PayloadFormRequest $request) {
     $obPayloadAuthTokenDTO        = PayloadAuthTokenDTO::fromArray($request->validated());
     $obAuthTokenGenerationService = new AuthTokenGenerationService($obPayloadAuthTokenDTO);
-    dd(json_encode($obPayloadAuthTokenDTO));
+
     $token = $obAuthTokenGenerationService->generate();
     dd($token);
   }
