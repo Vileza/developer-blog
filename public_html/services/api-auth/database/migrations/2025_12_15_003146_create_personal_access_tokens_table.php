@@ -12,9 +12,11 @@ return new class extends Migration {
   public function up(): void {
     Schema::create('personal_access_tokens', function (Blueprint $table) {
       $table->id();
-      $table->enum('type', AuthenticationType::getEnums())->default(AuthenticationType::READER);
-      $table->string('token', 64)->unique();
-      $table->timestamp('last_used_at')->nullable();
+      $table->string('identifier', 500)->index();
+      $table->enum('type', array_column(AuthenticationType::cases(), 'value'))
+            ->default(AuthenticationType::READER)
+            ->index();
+      $table->string('token', 500)->unique()->index();
       $table->timestamp('expires_at')->nullable()->index();
       $table->timestamps();
     });
