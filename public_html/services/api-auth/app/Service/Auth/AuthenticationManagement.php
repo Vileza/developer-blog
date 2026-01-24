@@ -6,6 +6,11 @@ use App\DTOs\Auth\PayloadAuthTokenDTO;
 use App\Repository\Token\PersonalAccessTokenRepository;
 use App\Service\Auth\Token\AuthTokenGenerationService;
 
+/**
+ * Classe serviço responsável por gerenciar a autenticação
+ * 
+ * @author David Guimarães
+ */
 class AuthenticationManagement {
   
   /**
@@ -30,15 +35,26 @@ class AuthenticationManagement {
     $this->payloadAuthTokenDTO = $obPayloadAuthTokenDTO;
   }
 
-  public function generateAuth(): string {
+  /**
+   * Método responsável por gerar o token de autenticação
+   * @return int
+   */
+  public function generateAuth(): int {
     $token = (new AuthTokenGenerationService($this->payloadAuthTokenDTO))->generate();
+    return $this->saveToken($token);
   }
 
-  private function saveToken(string $token): void {
-    $this->tokenRepository->create([
-      'token' => $token,
-      'type' => $this->payloadAuthTokenDTO->type,
-      'expires_at' => now()->addMinutes(15),
-    ]);
+  /**
+   * Método responsável por salvar o token de autenticação
+   * @param  string $token Token de autenticação
+   * @return int
+   */
+  private function saveToken(string $token): int {
+    $identifier = $this->payloadAuthTokenDTO->identifier;
+    $type       = $this->payloadAuthTokenDTO->type;
+
+    $obPersonalAccessToken = $this->tokenRepository->registerToken($identifier, $token, $type);
+
+    return ($obPersonalAccessToken && $obPersonalAccessToken->exists()) ? $obPersonalAccessToken->id : 0;
   }
 }

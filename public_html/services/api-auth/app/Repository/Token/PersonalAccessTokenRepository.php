@@ -26,4 +26,20 @@ class PersonalAccessTokenRepository extends BaseRepository {
   public function hasTokenById(int $id): bool {
     return $this->hasById($id);
   }
+
+  /**
+   * Método responsável por registrar um token
+   * @param  string $identifier Identificador
+   * @param  string $token      Token de acesso
+   * @param  string $type       Tipo de autenticação
+   * @return Model
+   */
+  public function registerToken(string $identifier, string $token, string $type) {
+    return $this->model::create([
+      'identifier' => $identifier,
+      'token'      => $token,
+      'type'       => $type,
+      'expires_at' => now()->addMinutes(15),
+    ]);
+  }
 }

@@ -3,8 +3,7 @@
 namespace App\Repository;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Query\Builder;
-
+use Illuminate\Database\Eloquent\Builder;
 /**
  * Classe base para os repositórios dos modelos
  * 
@@ -33,6 +32,15 @@ abstract class BaseRepository {
    */
   protected function hasById(int $id): bool {
     return $this->generateQuery()->where('id', '=', $id)->exists();
+  }
+
+  /**
+   * Método responsável por buscar um registro pelo ID
+   * @param  int $id Identificador
+   * @return Model|null
+   */
+  public function findById(int $id) {
+    return $this->generateQuery()->find($id);
   }
 
   /**
