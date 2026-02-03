@@ -24,6 +24,17 @@ class PayloadAuthTokenDTO implements BaseStructureInterface {
   public string $type;
 
   /**
+   * Método responsável por converter o DTO em um array
+   * @return array
+   */
+  public function asArray(): array {
+    return [
+      'identifier' => $this->identifier,
+      'type'       => $this->type,
+    ];
+  }
+
+  /**
    * Método responsável por criar um DTO a partir de um array
    * @param  array $data
    * @return self

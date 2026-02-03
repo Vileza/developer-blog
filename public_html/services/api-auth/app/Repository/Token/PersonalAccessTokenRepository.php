@@ -28,6 +28,16 @@ class PersonalAccessTokenRepository extends BaseRepository {
   }
 
   /**
+   * Método responsável por verificar se um token existe pelas condições
+   * @param  string $identifier Identificador
+   * @param  string $type       Tipo de autenticação
+   * @return bool
+   */
+  public function hasTokenByParameters(string $identifier, string $type): bool {
+    return $this->generateQuery()->where('identifier', '=', $identifier)->where('type', '=', $type)->exists();
+  }
+
+  /**
    * Método responsável por registrar um token
    * @param  string $identifier Identificador
    * @param  string $token      Token de acesso
