@@ -19,7 +19,7 @@ services:
       - "3307:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=database_auth
+      - MYSQL_DATABASE=database_api_auth
     volumes:
       - ./data/database-auth:/var/lib/mysql
     restart: always
