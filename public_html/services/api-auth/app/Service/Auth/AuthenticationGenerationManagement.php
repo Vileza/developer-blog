@@ -11,7 +11,7 @@ use App\Service\Auth\Token\AuthTokenGenerationService;
  * 
  * @author David Guimarães
  */
-class AuthenticationManagement {
+class AuthenticationGenerationManagement {
   
   /**
    * Payload de autenticação
