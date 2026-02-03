@@ -8,15 +8,22 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\PayloadFormRequest;
 use App\Http\Resource\Auth\AuthResource;
 use App\Repository\Token\PersonalAccessTokenRepository;
-use App\Service\Auth\AuthenticationManagement;
-use App\Service\Auth\Token\AuthTokenGenerationService;
-use Illuminate\Database\Eloquent\Casts\AsEnumCollection;
+use App\Service\Auth\AuthenticationGenerationManagement;
 
+/**
+ * Classe controlador responsável pela autenticação
+ * @author David Guimarães
+ */
 class AuthenticateController extends Controller {
 
+  /**
+   * Método responsável por gerar o token de autenticação
+   * @param  PayloadFormRequest $request
+   * @return AuthResource
+   */
   public function generateToken(PayloadFormRequest $request) {
     $obPayloadAuthTokenDTO      = PayloadAuthTokenDTO::fromArray($request->validated());
-    $obAuthenticationManagement = new AuthenticationManagement(new PersonalAccessTokenRepository, $obPayloadAuthTokenDTO);
+    $obAuthenticationManagement = new AuthenticationGenerationManagement(new PersonalAccessTokenRepository, $obPayloadAuthTokenDTO);
 
     $idToken = $obAuthenticationManagement->generateAuth();
 
