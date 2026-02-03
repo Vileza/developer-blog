@@ -16,7 +16,7 @@ return new class extends Migration {
       $table->enum('type', array_column(AuthenticationType::cases(), 'value'))
             ->default(AuthenticationType::READER)
             ->index();
-      $table->string('token', 500)->unique()->index();
+      $table->string('token', 1000)->unique()->index();
       $table->timestamp('expires_at')->nullable()->index();
       $table->timestamps();
     });
