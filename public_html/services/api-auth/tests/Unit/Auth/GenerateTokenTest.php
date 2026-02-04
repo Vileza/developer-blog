@@ -14,26 +14,6 @@ use Tests\TestCase;
 class GenerateTokenTest extends TestCase {
   
   /**
-   * Método responsável por testar a validação do payload decriptado
-   * @return void
-   */
-  public function testValidadePayloadDecrypted(): void {
-    $obPayloadDTO = PayloadAuthTokenDTO::fromArray([
-      'identifier' => 1,
-      'type'       => AuthenticationType::USER->value,
-    ]);
-
-    $token = (new AuthTokenGenerationService($obPayloadDTO))->generate();
-    $token = decrypt($token);
-    $tokenPayload = json_decode($token, true);
-
-    expect($token)->toBeString()->not->toBeEmpty();
-    expect($tokenPayload)->toBeArray()->not->toBeEmpty();
-    expect($tokenPayload['identifier'] ?? null)->toBeInt()->toBe($obPayloadDTO->identifier);
-    expect($tokenPayload['type'] ?? null)->toBeString()->toBe($obPayloadDTO->type);
-  }
-
-  /**
    * Método responsável por testar a geração do token de autenticação para usuário
    * @return void
    */
@@ -43,13 +23,20 @@ class GenerateTokenTest extends TestCase {
       'type'       => AuthenticationType::USER->value,
     ]);
 
-    $token        = (new AuthTokenGenerationService($obPayloadDTO))->generate();
-    $token        = decrypt($token);
-    $tokenPayload = json_decode($token, true);
+    $token = (new AuthTokenGenerationService($obPayloadDTO))->generate();
 
     expect($token)->toBeString()->not->toBeEmpty();
-    expect($tokenPayload)->toBeArray()->not->toBeEmpty();
-    expect($tokenPayload['type'] ?? null)->toBeString()->toBe(AuthenticationType::USER->value);
+    expect(explode('.', $token))->toHaveCount(1);
+
+    $tokenJWT   = decrypt($token);
+    $tokenParts = explode('.', $tokenJWT);
+
+    $header = json_decode(base64_decode($tokenParts[0]), true);
+    expect($header['alg'] ?? '')->toBe(env('JWT_ALGORITHM'));
+
+    $payload = json_decode(base64_decode($tokenParts[1]), true);
+    expect($payload['identifier'] ?? '')->toBeInt()->toBe($obPayloadDTO->identifier);
+    expect($payload['type'] ?? '')->toBeString()->toBe($obPayloadDTO->type);
   }
 
   /**
@@ -62,13 +49,20 @@ class GenerateTokenTest extends TestCase {
       'type'       => AuthenticationType::READER->value,
     ]);
 
-    $token        = (new AuthTokenGenerationService($obPayloadDTO))->generate();
-    $token        = decrypt($token);
-    $tokenPayload = json_decode($token, true);
+    $token = (new AuthTokenGenerationService($obPayloadDTO))->generate();
 
     expect($token)->toBeString()->not->toBeEmpty();
-    expect($tokenPayload)->toBeArray()->not->toBeEmpty();
-    expect($tokenPayload['type'] ?? null)->toBeString()->toBe(AuthenticationType::READER->value);
+    expect(explode('.', $token))->toHaveCount(1);
+
+    $tokenJWT   = decrypt($token);
+    $tokenParts = explode('.', $tokenJWT);
+
+    $header = json_decode(base64_decode($tokenParts[0]), true);
+    expect($header['alg'] ?? '')->toBe(env('JWT_ALGORITHM'));
+
+    $payload = json_decode(base64_decode($tokenParts[1]), true);
+    expect($payload['identifier'] ?? '')->toBeInt()->toBe($obPayloadDTO->identifier);
+    expect($payload['type'] ?? '')->toBeString()->toBe($obPayloadDTO->type);
   }
 
   /**
@@ -81,7 +75,7 @@ class GenerateTokenTest extends TestCase {
       'type'       => AuthenticationType::USER->value,
     ]);
 
-    $primaryToken = (new AuthTokenGenerationService($obPayloadDTO))->generate();
+    $primaryToken   = (new AuthTokenGenerationService($obPayloadDTO))->generate();
     $secondaryToken = (new AuthTokenGenerationService($obPayloadDTO))->generate();
 
     expect($primaryToken)->not->toBe($secondaryToken);
