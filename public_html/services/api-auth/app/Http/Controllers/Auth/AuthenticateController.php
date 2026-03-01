@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Auth;
 
 use App\DTOs\Auth\PayloadAuthTokenDTO;
-use App\Enums\Auth\AuthenticationType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\PayloadFormRequest;
 use App\Http\Resource\Auth\AuthResource;
 use App\Repository\Token\PersonalAccessTokenRepository;
 use App\Service\Auth\AuthenticationGenerationManagement;
+use Illuminate\Support\Facades\Cache;
 
 /**
  * Classe controlador responsável pela autenticação
@@ -22,11 +22,14 @@ class AuthenticateController extends Controller {
    * @return AuthResource
    */
   public function generateToken(PayloadFormRequest $request) {
-    $obPayloadAuthTokenDTO      = PayloadAuthTokenDTO::fromArray($request->validated());
-    $obAuthenticationManagement = new AuthenticationGenerationManagement(new PersonalAccessTokenRepository, $obPayloadAuthTokenDTO);
+    $token = Cache::remember('authentication:token:generate', 60, function () use ($request){
+      $obPayloadAuthTokenDTO      = PayloadAuthTokenDTO::fromArray($request->validated());
+      $obAuthenticationManagement = new AuthenticationGenerationManagement(new PersonalAccessTokenRepository, $obPayloadAuthTokenDTO);
 
-    $idToken = $obAuthenticationManagement->generateAuth();
+      $idToken = $obAuthenticationManagement->generateAuth();
 
-    return (new AuthResource((new PersonalAccessTokenRepository)->findById($idToken)));
+      return (new AuthResource((new PersonalAccessTokenRepository)->findById($idToken)));
+    });
+    return $token;
   }
 }
