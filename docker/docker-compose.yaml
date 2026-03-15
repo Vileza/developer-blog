@@ -95,6 +95,19 @@ services:
       - blog-microservices-network
     restart: always
 
+
+  app-blog:
+    container_name: app-view-blog
+    build: 
+      context: ./../public_html/app
+      dockerfile: ./../../docker/containers/frontend/Dockerfile
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./../public_html/app:/app
+      - /app/node_modules
+    networks:
+      - blog-microservices-network
 networks:
   blog-microservices-network:
     driver: bridge
